@@ -1,0 +1,39 @@
+inspired by: https://github.com/hodgef/simple-keyboard/
+
+- Register compoenent A as a sub of component B
+https://vuejs.org/v2/guide/components-registration.html
+
+var ComponentB = {
+  components: {
+    'component-a': ComponentA
+  },
+  // ...
+}
+
+- Layout the keyboard
+- Add actions to keys
+    - Give custom actions to key types
+        - Modifier Keys
+        - ...
+    - Allow user to bind event to a key [ie return to send]
+    - Transitions
+    - Configurations
+- Layout
+- Add some thing that is the output view 
+- Set up a typescript project
+- dev mode
+- production mode
+- webpack?
+- SASS compile
+
+Most important, what to I want the ReadMe.md to look like write this first
+Cover image showing the various themes (cut between them)
+Short explanation of features
+
+Explain configuration
+    - new keyboard
+    - new key event
+    - styling
+    - simple config (theme, caps show, transitions, ...)
+    - ...
+
