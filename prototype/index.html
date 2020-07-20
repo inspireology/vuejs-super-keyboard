@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>SuperKeyboard Prototype</title>
+    <!--
+        <link rel="stylesheet" href="/css/master.css" type="text/css" media="screen" charset="utf-8" />
+        <script type="text/javascript" charset="utf-8"></script>
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <style>
+        .key {
+            width: 60px;
+            height: 60px;
+            float: left;
+            clear: none;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
+
+            flex-grow: 1;
+            border-radius: 5px;
+            border-color: white;
+            border-width: 1px;
+            border-style: solid;
+            background-color: hsla(89, 0%, 100%, 0.4);
+
+            transition: background-color 0.3s;
+        }
+
+        .key:hover {
+            background-color: hsla(89, 0%, 100%, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        .key:active {
+            background-color: hsla(89, 0%, 100%, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .keyboard-row {
+            width: 100%;
+            display: flex;
+            clear: both;
+            float: left;
+
+            display: flex;
+            flex-direction: row;
+        }
+
+        .keyboard {
+            backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+            background-color: hsla(89, 0%, 100%, 0.5);
+        }
+
+        body {
+            background-image: url("../assets/kristopher-roller-zepnJQycr4U-unsplash_1280.jpg")
+        }
+    </style>
+</head>
+
+<body>
+    <div id="keys">
+        <div id="display"> {{ display }} </div>
+        <!--
+        <div v-for="(key, index) in keys" v-on:click="receiveInput">
+            <div class="key" v-bind:unique="key.unique"> {{ key.label }} </div>
+        </div>
+        -->
+
+        <div class="keyboard">
+            <div class="keyboard-row" v-for="(row, rowIndex) in rows">
+                <div  class="key" v-for="(key, keyIndex) in row" v-on:click="receiveInput" v-bind:unique="key.unique" > {{ key.label }} </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#keys',
+        methods: {
+            receiveInput: function(event) {
+                var keyAttributes = event.srcElement.attributes;
+
+                var enteredCharacter = '';
+
+                if (keyAttributes.hasOwnProperty('unique')) {
+                    enteredCharacter = event.srcElement.attributes.unique.value;
+
+                } else {
+                    enteredCharacter = event.srcElement.attributes.label.value;
+                }
+
+                //console.log(event.srcElement.attributes.unique);
+                //this.display = event.srcElement.attributes.unique.value;
+                this.display += enteredCharacter;
+            },
+
+            // Modifiers are keys that combine with other keys to produce modified output
+            modifier_caps: function(event) {
+                // toggle the caps on switch
+                // if caps on choose uppercase
+            },
+
+            modifier_shift: function(event) {
+                // toggle the caps on switch
+
+            },
+
+            modifier_alt: function(event) {
+                // toggle the caps on switch
+
+            },
+
+            modifier_accent: function(event) {
+                // While is pressed, cycle through the accents for the letter
+                // if non exists do nothing
+            },
+
+            backspace: function(event) {
+                // Delete the previous letter
+            },
+
+            undo: function(event) {
+
+            },
+
+            redo: function(event) {
+
+            }
+        },
+        data: {
+            display: ' ', // Display could be an array of values so that undo could work
+            shift: '', //
+            capsLock: '',
+            control: '',
+            alt: '',
+            keys: [
+                { label: 'a', unique: 'alpha' },
+                { label: 'b', unique: 'beta' },
+                { label: 'c', unique: 'gamma' },
+                { label: 'd', unique: 'delta' },
+                { label: 'e', unique: 'epsilon' },
+                { label: 'f', unique: 'fonky' }
+            ],
+            rows: [
+                //keys inheriting from other keys ie: a key inheriting caps behavior from another
+                //Multiple presses of a key with accent key scrolling through the various accent types
+                // Action keys as a subtype object of keys (interface?)
+                // Input keys as a separate object
+                [
+                    //{ label: '', unique: '', caps: '', action: '', style: '', class: '', modifiers: { shift: '', control: '', alt: '', super: '' } },
+                    { label: '1' },
+                    { label: '2' },
+                    { label: '3' },
+                    { label: '4' },
+                    { label: '5' },
+                    { label: '6' },
+                    { label: '7' },
+                    { label: '8' },
+                    { label: '9' },
+                    { label: '0' },
+                    { label: 'backspace', action: 'backspace' }
+                ], [
+                    { label: 'tab', action: 'tab' },
+                    { label: 'Q' },
+                    { label: 'W' },
+                    { label: 'E' },
+                    { label: 'R' },
+                    { label: 'T' },
+                    { label: 'Y' },
+                    { label: 'U' },
+                    { label: 'I' },
+                    { label: 'O' },
+                    { label: 'P' },
+                    { label: '{' },
+                    { label: '}' },
+                    { label: '|' },
+                ], [
+                    { label: 'caps-lock', action: 'caps' },
+                    { label: 'A' },
+                    { label: 'S' },
+                    { label: 'D' },
+                    { label: 'F' },
+                    { label: 'G' },
+                    { label: 'H' },
+                    { label: 'J' },
+                    { label: 'K' },
+                    { label: 'L' },
+                    { label: ':' },
+                    { label: '"' },
+                    { label: 'Return ', action: 'Return ' },
+                ],  [
+                    { label: 'Shift', action: 'shift' },
+                    { label: 'Z' },
+                    { label: 'X' },
+                    { label: 'C' },
+                    { label: 'V' },
+                    { label: 'B' },
+                    { label: 'N' },
+                    { label: 'M' },
+                    { label: '<' },
+                    { label: '>' },
+                    { label: '?' },
+                    { label: 'Shift', action: 'shift' },
+                ], [
+                    { label: 'Control', action: 'control' },
+                    { label: 'Super', action: 'super' },
+                    { label: 'Alt', action: 'alt' },
+                    { label: 'space' },
+                    { label: 'left' },
+                    { label: 'down' },
+                    { label :'up' },
+                    { label: 'right' },
+                ]
+            ]
+        }
+    })
+</script>
+
+</html>
