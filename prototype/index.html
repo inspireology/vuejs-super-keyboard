@@ -65,187 +65,198 @@
 </head>
 
 <body>
-    <div id="keys">
-        <div id="display"> {{ display }} </div>
-        <!--
-        <div v-for="(key, index) in keys" v-on:click="receiveInput">
-            <div class="key" v-bind:unique="key.unique"> {{ key.label }} </div>
-        </div>
-        -->
+<div id="keys">
+    <div id="display"> {{ display }}</div>
+    <!--
+    <div v-for="(key, index) in keys" v-on:click="receiveInput">
+        <div class="key" v-bind:unique="key.unique"> {{ key.label }} </div>
+    </div>
+    -->
 
-        <div class="keyboard">
-            <div class="keyboard-row" v-for="(row, rowIndex) in rows">
-                <div  class="key" v-for="(key, keyIndex) in row" v-on:click="receiveInput" v-bind:unique="key.label" > {{ key.label }} </div>
-            </div>
+    <div class="keyboard">
+        <div class="keyboard-row" v-for="(row, rowIndex) in rows">
+            <div class="key" v-for="(key, keyIndex) in row" v-on:click="receiveInput" v-bind:keyUniqueId="keyIndex" v-bind:rowIndex="rowIndex" v-bind:keyIndex="keyIndex"> {{ keyIndex }}</div>
         </div>
     </div>
+</div>
 </body>
 <script>
 
-    key = function () {
-      var upperCase = '';
-      var lowerCase = '';
+  key = function () {
+    var upperCase = ''
+    var lowerCase = ''
 
-      function getUpper() {
+    function getUpper () {
 
-      }
-
-      function getLower() {
-
-      }
     }
 
-    var app = new Vue({
-        el: '#keys',
-        methods: {
-            receiveInput: function(event) {
-                var keyAttributes = event.srcElement.attributes;
+    function getLower () {
 
-                var enteredCharacter = '';
+    }
+  }
 
-                /*
-                if (keyAttributes.hasOwnProperty('unique')) {
-                    enteredCharacter = event.srcElement.attributes.unique.value;
+  var app = new Vue({
+    el: '#keys',
+    methods: {
+      receiveInput: function (event) {
+        var keyAttributes = event.srcElement.attributes
 
-                } else {
-                    enteredCharacter = event.srcElement.attributes.label.value;
-                }
-                */
+        var enteredCharacter = ''
 
-                enteredCharacter = keyAttributes.unique.value;
-                console.log(enteredCharacter);
+        /*
+        if (keyAttributes.hasOwnProperty('unique')) {
+            enteredCharacter = event.srcElement.attributes.unique.value;
 
-                //console.log(event.srcElement.attributes.unique);
-                //this.display = event.srcElement.attributes.unique.value;
-                this.display += enteredCharacter;
-            },
-
-            // Modifiers are keys that combine with other keys to produce modified output
-            modifier_caps: function(event) {
-                // toggle the caps on switch
-                // if caps on choose uppercase
-            },
-
-            modifier_shift: function(event) {
-                // toggle the caps on switch
-
-            },
-
-            modifier_alt: function(event) {
-                // toggle the caps on switch
-
-            },
-
-            modifier_accent: function(event) {
-                // While is pressed, cycle through the accents for the letter
-                // if non exists do nothing
-            },
-
-            backspace: function(event) {
-                // Delete the previous letter
-            },
-
-            undo: function(event) {
-
-            },
-
-            redo: function(event) {
-
-            },
-
-            // Create key unique id map
-            createUniqueIdMap: function() {
-                // keyUniqueMap Empty array
-                // Take rows
-                // For each row
-                    // for each object
-                        // Get unique ( use label if no unique )
-                        // Store in array
-            }
-        },
-        data: {
-            display: ' ', // Display could be an array of values so that undo could work
-            shift: '', //
-            capsLock: '',
-            control: '',
-            alt: '',
-            uniqueMap: { // Index keys by unique id and point to the row and key in the keyboard
-              unique:{},
-            },
-            rows: [
-                // keys inheriting from other keys ie: a key inheriting caps behavior from another
-                // Multiple presses of a key with accent key scrolling through the various accent types
-                // Action keys as a subtype object of keys (interface?)
-                // Input keys as a separate object
-                [
-                    // { label: '', unique: '', caps: '', action: '', style: '', class: '', modifiers: { shift: '', control: '', alt: '', super: '' } },
-                    { label: '1' },
-                    { label: '2' },
-                    { label: '3' },
-                    { label: '4' },
-                    { label: '5' },
-                    { label: '6' },
-                    { label: '7' },
-                    { label: '8' },
-                    { label: '9' },
-                    { label: '0' },
-                    { label: 'backspace', action: 'backspace' }
-                ], [
-                    { label: 'tab', action: 'tab' },
-                    { label: 'Q', lower: 'q' },
-                    { label: 'W', lower: 'w' },
-                    { label: 'E', lower: 'e' },
-                    { label: 'R', lower: 'r' },
-                    { label: 'T', lower: 't' },
-                    { label: 'Y', lower: 'y' },
-                    { label: 'U', lower: 'u' },
-                    { label: 'I', lower: 'i' },
-                    { label: 'O', lower: 'o' },
-                    { label: 'P', lower: 'p' },
-                    { label: '{', lower: '{' },
-                    { label: '}', lower: '}' },
-                    { label: '|', lower: '|' },
-                ], [
-                    { label: 'caps-lock', action: 'caps' },
-                    { label: 'A', lower: 'a' },
-                    { label: 'S', lower: 's' },
-                    { label: 'D', lower: 'd' },
-                    { label: 'F', lower: 'f' },
-                    { label: 'G', lower: 'g' },
-                    { label: 'H', lower: 'h' },
-                    { label: 'J', lower: 'j' },
-                    { label: 'K', lower: 'k' },
-                    { label: 'L', lower: 'l' },
-                    { label: ':', lower: ':' },
-                    { label: '"', lower: '"' },
-                    { label: 'Return ', action: 'Return ' },
-                ],  [
-                    { label: 'Shift', action: 'shift' },
-                    { label: 'Z', lower: 'z' },
-                    { label: 'X', lower: 'x' },
-                    { label: 'C', lower: 'c' },
-                    { label: 'V', lower: 'v' },
-                    { label: 'B', lower: 'b' },
-                    { label: 'N', lower: 'n' },
-                    { label: 'M', lower: 'm' },
-                    { label: '<', lower: '<' },
-                    { label: '>', lower: '>' },
-                    { label: '?', lower: '?' },
-                    { label: 'Shift', action: 'shift' },
-                ], [
-                    { label: 'Control', action: 'control' },
-                    { label: 'Super', action: 'super' },
-                    { label: 'Alt', action: 'alt' },
-                    { label: 'Space' },
-                    { label: '@' },
-                    { label: 'left' },
-                    { label: 'down' },
-                    { label :'up' },
-                    { label: 'right' },
-                ]
-            ]
+        } else {
+            enteredCharacter = event.srcElement.attributes.label.value;
         }
-    })
+        */
+
+        enteredCharacter = keyAttributes.keyUniqueId.value
+        console.log(enteredCharacter)
+
+        //console.log(event.srcElement.attributes.unique);
+        //this.display = event.srcElement.attributes.unique.value;
+        this.display += enteredCharacter
+      },
+
+      // Modifiers are keys that combine with other keys to produce modified output
+      modifier_caps: function (event) {
+        // toggle the caps on switch
+        // if caps on choose uppercase
+      },
+
+      modifier_shift: function (event) {
+        // toggle the caps on switch
+
+      },
+
+      modifier_alt: function (event) {
+        // toggle the caps on switch
+
+      },
+
+      modifier_accent: function (event) {
+        // While is pressed, cycle through the accents for the letter
+        // if non exists do nothing
+      },
+
+      backspace: function (event) {
+        // Delete the previous letter
+      },
+
+      undo: function (event) {
+
+      },
+
+      redo: function (event) {
+
+      },
+
+      // Create key unique id map
+      createUniqueIdMap: function (rows) {
+        var uniqueIdMap = [];
+        for (let rowIndex in rows) {
+          for (let keyIndex in rows[rowIndex]) {
+            uniqueIdMap[keyIndex] = rowIndex;
+          }
+        }
+        // keyUniqueMap Empty array
+        // Take rows
+        // For each row
+        // for each object
+        // Get unique ( use label if no unique )
+        // Store in array
+        return uniqueIdMap;
+      },
+
+      initKeyboard: function (rows) {
+        // Init each key with a label
+      }
+    },
+    data: {
+      display: ' ', // Display could be an array of values so that undo could work
+      shift: '', //
+      capsLock: '',
+      control: '',
+      alt: '',
+      uniqueMap: { // Index keys by unique id and point to the row and key in the keyboard
+        unique: {},
+      },
+      rows: [
+        // keys inheriting from other keys ie: a key inheriting caps behavior from another
+        // Multiple presses of a key with accent key scrolling through the various accent types
+        // Action keys as a subtype object of keys (interface?)
+        // Input keys as a separate object
+        {
+          // { label: '', unique: '', caps: '', action: '', style: '', class: '', modifiers: { shift: '', control: '', alt: '', super: '' } },
+          '1': {},
+          '2': {},
+          '3': {},
+          '4': {},
+          '5': {},
+          '6': {},
+          '7': {},
+          '8': {},
+          '9': {},
+          '0': {},
+          'backspace': { action: 'backspace' }
+        }, {
+          'tab': { action: 'tab' },
+          'Q': { lower: 'q' },
+          'W': { lower: 'w' },
+          'E': { lower: 'e' },
+          'R': { lower: 'r' },
+          'T': { lower: 't' },
+          'Y': { lower: 'y' },
+          'U': { lower: 'u' },
+          'I': { lower: 'i' },
+          'O': { lower: 'o' },
+          'P': { lower: 'p' },
+          '{': { lower: '{' },
+          '}': { lower: '}' },
+          '|': { lower: '|' }
+        }, {
+          'caps-lock': { action: 'caps' },
+          'A': { lower: 'a' },
+          'S': { lower: 's' },
+          'D': { lower: 'd' },
+          'F': { lower: 'f' },
+          'G': { lower: 'g' },
+          'H': { lower: 'h' },
+          'J': { lower: 'j' },
+          'K': { lower: 'k' },
+          'L': { lower: 'l' },
+          ':': { lower: ':' },
+          '"': { lower: '"' },
+          'Return ': { action: 'Return ' }
+        }, {
+          'Shift': { action: 'shift' },
+          'Z': { lower: 'z' },
+          'X': { lower: 'x' },
+          'C': { lower: 'c' },
+          'V': { lower: 'v' },
+          'B': { lower: 'b' },
+          'N': { lower: 'n' },
+          'M': { lower: 'm' },
+          '<': { lower: '<' },
+          '>': { lower: '>' },
+          '?': { lower: '?' },
+          'Shift': { action: 'shift' }
+        }, {
+          'Control': { action: 'control' },
+          'Super':   { action: 'super' },
+          'Alt':     { action: 'alt' },
+          'Space':   {},
+          '@':       {},
+          'left':    {},
+          'down':    {},
+          'up':      {},
+          'right':   {}
+        }
+      ]
+    }
+  })
 </script>
 
 </html>
