@@ -29,17 +29,16 @@
             border-style: solid;
             background-color: hsla(89, 0%, 100%, 0.4);
 
-            transition: background-color 0.3s;
+            transition: background-color 0.2s;
+            user-select: none;
         }
 
         .key:hover {
-            background-color: hsla(89, 0%, 100%, 1);
-            backdrop-filter: blur(5px);
+            background-color: hsla(89, 0%, 100%, 0.7);
         }
 
         .key:active {
             background-color: hsla(89, 0%, 100%, 1);
-            backdrop-filter: blur(10px);
         }
 
         .keyboard-row {
@@ -53,7 +52,7 @@
         }
 
         .keyboard {
-            backdrop-filter: blur(2px);
+            /* backdrop-filter: blur(2px); */
             display: flex;
             flex-direction: column;
             background-color: hsla(89, 0%, 100%, 0.5);
@@ -76,12 +75,26 @@
 
         <div class="keyboard">
             <div class="keyboard-row" v-for="(row, rowIndex) in rows">
-                <div  class="key" v-for="(key, keyIndex) in row" v-on:click="receiveInput" v-bind:unique="key.unique" > {{ key.label }} </div>
+                <div  class="key" v-for="(key, keyIndex) in row" v-on:click="receiveInput" v-bind:unique="key.label" > {{ key.label }} </div>
             </div>
         </div>
     </div>
 </body>
 <script>
+
+    key = function () {
+      var upperCase = '';
+      var lowerCase = '';
+
+      function getUpper() {
+
+      }
+
+      function getLower() {
+
+      }
+    }
+
     var app = new Vue({
         el: '#keys',
         methods: {
@@ -90,12 +103,17 @@
 
                 var enteredCharacter = '';
 
+                /*
                 if (keyAttributes.hasOwnProperty('unique')) {
                     enteredCharacter = event.srcElement.attributes.unique.value;
 
                 } else {
                     enteredCharacter = event.srcElement.attributes.label.value;
                 }
+                */
+
+                enteredCharacter = keyAttributes.unique.value;
+                console.log(enteredCharacter);
 
                 //console.log(event.srcElement.attributes.unique);
                 //this.display = event.srcElement.attributes.unique.value;
@@ -133,6 +151,16 @@
 
             redo: function(event) {
 
+            },
+
+            // Create key unique id map
+            createUniqueIdMap: function() {
+                // keyUniqueMap Empty array
+                // Take rows
+                // For each row
+                    // for each object
+                        // Get unique ( use label if no unique )
+                        // Store in array
             }
         },
         data: {
@@ -141,21 +169,16 @@
             capsLock: '',
             control: '',
             alt: '',
-            keys: [
-                { label: 'a', unique: 'alpha' },
-                { label: 'b', unique: 'beta' },
-                { label: 'c', unique: 'gamma' },
-                { label: 'd', unique: 'delta' },
-                { label: 'e', unique: 'epsilon' },
-                { label: 'f', unique: 'fonky' }
-            ],
+            uniqueMap: { // Index keys by unique id and point to the row and key in the keyboard
+              unique:{},
+            },
             rows: [
-                //keys inheriting from other keys ie: a key inheriting caps behavior from another
-                //Multiple presses of a key with accent key scrolling through the various accent types
+                // keys inheriting from other keys ie: a key inheriting caps behavior from another
+                // Multiple presses of a key with accent key scrolling through the various accent types
                 // Action keys as a subtype object of keys (interface?)
                 // Input keys as a separate object
                 [
-                    //{ label: '', unique: '', caps: '', action: '', style: '', class: '', modifiers: { shift: '', control: '', alt: '', super: '' } },
+                    // { label: '', unique: '', caps: '', action: '', style: '', class: '', modifiers: { shift: '', control: '', alt: '', super: '' } },
                     { label: '1' },
                     { label: '2' },
                     { label: '3' },
@@ -169,51 +192,52 @@
                     { label: 'backspace', action: 'backspace' }
                 ], [
                     { label: 'tab', action: 'tab' },
-                    { label: 'Q' },
-                    { label: 'W' },
-                    { label: 'E' },
-                    { label: 'R' },
-                    { label: 'T' },
-                    { label: 'Y' },
-                    { label: 'U' },
-                    { label: 'I' },
-                    { label: 'O' },
-                    { label: 'P' },
-                    { label: '{' },
-                    { label: '}' },
-                    { label: '|' },
+                    { label: 'Q', lower: 'q' },
+                    { label: 'W', lower: 'w' },
+                    { label: 'E', lower: 'e' },
+                    { label: 'R', lower: 'r' },
+                    { label: 'T', lower: 't' },
+                    { label: 'Y', lower: 'y' },
+                    { label: 'U', lower: 'u' },
+                    { label: 'I', lower: 'i' },
+                    { label: 'O', lower: 'o' },
+                    { label: 'P', lower: 'p' },
+                    { label: '{', lower: '{' },
+                    { label: '}', lower: '}' },
+                    { label: '|', lower: '|' },
                 ], [
                     { label: 'caps-lock', action: 'caps' },
-                    { label: 'A' },
-                    { label: 'S' },
-                    { label: 'D' },
-                    { label: 'F' },
-                    { label: 'G' },
-                    { label: 'H' },
-                    { label: 'J' },
-                    { label: 'K' },
-                    { label: 'L' },
-                    { label: ':' },
-                    { label: '"' },
+                    { label: 'A', lower: 'a' },
+                    { label: 'S', lower: 's' },
+                    { label: 'D', lower: 'd' },
+                    { label: 'F', lower: 'f' },
+                    { label: 'G', lower: 'g' },
+                    { label: 'H', lower: 'h' },
+                    { label: 'J', lower: 'j' },
+                    { label: 'K', lower: 'k' },
+                    { label: 'L', lower: 'l' },
+                    { label: ':', lower: ':' },
+                    { label: '"', lower: '"' },
                     { label: 'Return ', action: 'Return ' },
                 ],  [
                     { label: 'Shift', action: 'shift' },
-                    { label: 'Z' },
-                    { label: 'X' },
-                    { label: 'C' },
-                    { label: 'V' },
-                    { label: 'B' },
-                    { label: 'N' },
-                    { label: 'M' },
-                    { label: '<' },
-                    { label: '>' },
-                    { label: '?' },
+                    { label: 'Z', lower: 'z' },
+                    { label: 'X', lower: 'x' },
+                    { label: 'C', lower: 'c' },
+                    { label: 'V', lower: 'v' },
+                    { label: 'B', lower: 'b' },
+                    { label: 'N', lower: 'n' },
+                    { label: 'M', lower: 'm' },
+                    { label: '<', lower: '<' },
+                    { label: '>', lower: '>' },
+                    { label: '?', lower: '?' },
                     { label: 'Shift', action: 'shift' },
                 ], [
                     { label: 'Control', action: 'control' },
                     { label: 'Super', action: 'super' },
                     { label: 'Alt', action: 'alt' },
-                    { label: 'space' },
+                    { label: 'Space' },
+                    { label: '@' },
                     { label: 'left' },
                     { label: 'down' },
                     { label :'up' },
