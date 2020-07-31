@@ -43,7 +43,6 @@
 
         .keyboard-row {
             width: 100%;
-            display: flex;
             clear: both;
             float: left;
 
@@ -66,7 +65,8 @@
 
 <body>
 <div id="keys">
-    <div id="display"> {{ display }}</div>
+    <div id="display"> {{ display }} </div>
+
     <!--
     <div v-for="(key, index) in keys" v-on:click="receiveInput">
         <div class="key" v-bind:unique="key.unique"> {{ key.label }} </div>
@@ -75,7 +75,7 @@
 
     <div class="keyboard">
         <div class="keyboard-row" v-for="(row, rowIndex) in rows">
-            <div class="key" v-for="(key, keyIndex) in row" v-on:click="receiveInput" v-bind:keyUniqueId="keyIndex" v-bind:rowIndex="rowIndex" v-bind:keyIndex="keyIndex"> {{ keyIndex }}</div>
+            <div class="key" v-for="(key, keyIndex) in row" v-on:click="receiveInput" v-bind:keyUniqueId="keyIndex" v-bind:rowIndex="rowIndex" v-bind:keyIndex="keyIndex"> {{ keyIndex }} </div>
         </div>
     </div>
 </div>
@@ -99,9 +99,9 @@
     el: '#keys',
     methods: {
       receiveInput: function (event) {
-        var keyAttributes = event.srcElement.attributes
+        var keyAttributes = event.srcElement.attributes;
 
-        var enteredCharacter = ''
+        var enteredCharacter = '';
 
         /*
         if (keyAttributes.hasOwnProperty('unique')) {
@@ -112,12 +112,19 @@
         }
         */
 
-        enteredCharacter = keyAttributes.keyUniqueId.value
-        console.log(enteredCharacter)
+        enteredCharacter = keyAttributes.keyUniqueId.value;
+        var keyId        = keyAttributes.keyIndex.value;
+        var rowId        = keyAttributes.rowIndex.value;
+        var key          = this.rows[rowId][keyId];
 
-        //console.log(event.srcElement.attributes.unique);
-        //this.display = event.srcElement.attributes.unique.value;
-        this.display += enteredCharacter
+        console.log(enteredCharacter);
+        console.log(rowId);
+        console.log(keyId);
+        console.log(key);
+
+        // console.log(event.srcElement.attributes.unique);
+        // this.display = event.srcElement.attributes.unique.value;
+        this.display += enteredCharacter;
       },
 
       // Modifiers are keys that combine with other keys to produce modified output
@@ -153,23 +160,6 @@
 
       },
 
-      // Create key unique id map
-      createUniqueIdMap: function (rows) {
-        var uniqueIdMap = [];
-        for (let rowIndex in rows) {
-          for (let keyIndex in rows[rowIndex]) {
-            uniqueIdMap[keyIndex] = rowIndex;
-          }
-        }
-        // keyUniqueMap Empty array
-        // Take rows
-        // For each row
-        // for each object
-        // Get unique ( use label if no unique )
-        // Store in array
-        return uniqueIdMap;
-      },
-
       initKeyboard: function (rows) {
         // Init each key with a label
       }
@@ -180,9 +170,6 @@
       capsLock: '',
       control: '',
       alt: '',
-      uniqueMap: { // Index keys by unique id and point to the row and key in the keyboard
-        unique: {},
-      },
       rows: [
         // keys inheriting from other keys ie: a key inheriting caps behavior from another
         // Multiple presses of a key with accent key scrolling through the various accent types
