@@ -15,8 +15,11 @@
     </div>
 </template>
 
-<script lang="js">
-module.exports = {
+<script lang="ts">
+//  module.exports = {
+import Vue from 'vue'
+
+export default Vue.extend({
   data: function () {
     return {
       count: 0,
@@ -84,7 +87,7 @@ module.exports = {
           '<': { lower: '<' },
           '>': { lower: '>' },
           '?': { lower: '?' },
-          'Shift': { action: 'shift' }
+          'Shift_': { action: 'shift' }
         }, {
           'Control': { action: 'control' },
           'Super':   { action: 'super' },
@@ -101,15 +104,16 @@ module.exports = {
   },
   // props: ['rows'],
   methods: {
-    receiveInput: function (event) {
-      var keyAttributes = event.srcElement.attributes;
+    receiveInput: function (event: ) {
+      let keyAttributes = event.srcElement.attributes;
 
-      var enteredCharacter = '';
+      let enteredCharacter = '';
 
       enteredCharacter = keyAttributes.keyUniqueId.value;
-      var keyId        = keyAttributes.keyIndex.value;
-      var rowId        = keyAttributes.rowIndex.value;
-      var key          = this.rows[rowId][keyId];
+      let keyId:number = keyAttributes.keyIndex.value;
+      let rowId:number = keyAttributes.rowIndex.value;
+      let key          = this.rows[rowId][keyId];
+      //let key   = this.rows[rowId];
 
       console.log(enteredCharacter);
       console.log(rowId);
@@ -136,9 +140,57 @@ module.exports = {
              </div>
          </div>
      `
-}
+}})
 </script>
 
 <style scoped>
+  .key {
+    width: 60px;
+    height: 60px;
+    float: left;
+    clear: none;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
 
+    flex-grow: 1;
+    border-radius: 5px;
+    border-color: white;
+    border-width: 1px;
+    border-style: solid;
+    background-color: hsla(89, 0%, 100%, 0.4);
+
+    transition: background-color 0.2s;
+    user-select: none;
+  }
+
+  .key:hover {
+    background-color: hsla(89, 0%, 100%, 0.7);
+  }
+
+  .key:active {
+    background-color: hsla(89, 0%, 100%, 1);
+  }
+
+  .keyboard-row {
+    width: 100%;
+    clear: both;
+    float: left;
+
+    display: flex;
+    flex-direction: row;
+  }
+
+  .keyboard {
+    /* backdrop-filter: blur(2px); */
+    display: flex;
+    flex-direction: column;
+    background-color: hsla(89, 0%, 100%, 0.5);
+  }
+
+  body {
+    /*background-image: url("../assets/kristopher-roller-zepnJQycr4U-unsplash_1280.jpg")*/
+  }
 </style>
